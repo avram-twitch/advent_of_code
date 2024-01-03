@@ -9,7 +9,7 @@ import (
 )
 
 var enemyPlayMap map[string]string
-var myPlayMap map[string]string
+var myPlayMap map[string]map[string]string
 var playValueMap map[string]int
 var outcomesMap map[string]map[string]int
 
@@ -43,11 +43,10 @@ func init() {
         "B": "Paper",
         "C": "Scissors",
     }
-    myPlayMap = map[string]string {
-        "X": "Rock",
-        "Y": "Paper",
-        "Z": "Scissors",
-    }
+    myPlayMap = make(map[string]map[string]string)
+    myPlayMap["X"] = map[string]string { "Rock": "Scissors", "Paper": "Rock", "Scissors": "Paper" }
+    myPlayMap["Y"] = map[string]string { "Rock": "Rock", "Paper": "Paper", "Scissors": "Scissors" }
+    myPlayMap["Z"] = map[string]string { "Rock": "Paper", "Paper": "Scissors", "Scissors": "Rock" }
     playValueMap = map[string]int {
         "Rock": 1,
         "Paper": 2,
@@ -61,7 +60,7 @@ func init() {
 
 func get_round_points(round []string) int {
     enemyPlay := enemyPlayMap[round[0]]
-    myPlay := myPlayMap[round[1]]
+    myPlay := myPlayMap[round[1]][enemyPlay]
     return outcomesMap[enemyPlay][myPlay] + playValueMap[myPlay]
 }
 
