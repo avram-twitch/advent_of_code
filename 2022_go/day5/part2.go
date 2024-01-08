@@ -110,19 +110,15 @@ func printStacks(stacks [][]string) {
 func executeInstructions(stacks [][]string, instructions []Instruction) [][]string {
     for _, instruction := range instructions {
         fmt.Printf("Executing quantity: %d, From %d, To %d\n", instruction.quantity, instruction.from, instruction.to)
-        for i := 0; i < instruction.quantity; i++ {
-            fromIndex := instruction.from - 1
-            toIndex := instruction.to - 1
-            toStack := stacks[toIndex]
-            fromStack := stacks[fromIndex]
-            movedValue := fromStack[len(fromStack) - 1]
-            fmt.Printf("Moving %s\n", movedValue)
-            toStack = append(toStack, movedValue)
-            fromStack = fromStack[:len(fromStack) - 1]
-
-            stacks[toIndex] = toStack
-            stacks[fromIndex] = fromStack
-        }
+        fromIndex := instruction.from - 1
+        toIndex := instruction.to - 1
+        toStack := stacks[toIndex]
+        fromStack := stacks[fromIndex]
+        movedValues := fromStack[len(fromStack)  - instruction.quantity:]
+        toStack = append(toStack, movedValues...)
+        fromStack = fromStack[:len(fromStack)  - instruction.quantity]
+        stacks[toIndex] = toStack
+        stacks[fromIndex] = fromStack
         printStacks(stacks)
     }
 
